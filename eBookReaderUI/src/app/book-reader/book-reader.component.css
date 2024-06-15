@@ -1,0 +1,11 @@
+#viewer {
+    width: calc(80vw - 125px);
+    height: calc(80vh - 96px);
+    margin: 0 auto;
+    margin-right: auto;
+    max-width: 1250px;
+    z-index: 2;
+    position: relative;
+    overflow: hidden;
+    transition: margin-right .2s;
+  }
