@@ -4,8 +4,13 @@
     margin: 0 auto;
     margin-right: auto;
     max-width: 1250px;
-    z-index: 2;
+    z-index: 0;
     position: relative;
     overflow: hidden;
     transition: margin-right .2s;
-  }
+    background-color: aliceblue;
+}
+
+.controls {
+    align-items: center;
+}

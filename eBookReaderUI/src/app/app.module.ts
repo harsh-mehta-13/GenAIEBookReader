@@ -2,23 +2,29 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MaterialModule } from './material.module';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { CommonModule } from '@angular/common';
+import { BookReaderModule } from './book-reader/book-reader.module';
+import { BookLibraryModule } from './book-library/book-library.module';
+import { HomeModule } from './home/home.module';
+
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
     MaterialModule,
-    MatSlideToggleModule
+    BookReaderModule,
+    BookLibraryModule,
+    HomeModule
   ],
-  providers: [
-    provideAnimationsAsync()
+  declarations: [
+    AppComponent,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }
