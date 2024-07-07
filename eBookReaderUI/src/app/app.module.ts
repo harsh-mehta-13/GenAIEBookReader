@@ -8,8 +8,6 @@ import { MaterialModule } from './material.module';
 import { CommonModule } from '@angular/common';
 import { BookReaderModule } from './book-reader/book-reader.module';
 import { BookLibraryModule } from './book-library/book-library.module';
-import { HomeModule } from './home/home.module';
-
 
 @NgModule({
   imports: [
@@ -20,11 +18,11 @@ import { HomeModule } from './home/home.module';
     MaterialModule,
     BookReaderModule,
     BookLibraryModule,
-    HomeModule
   ],
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   bootstrap: [AppComponent],
+  providers: [
+    provideAnimationsAsync()
+  ],
 })
-export class AppModule { }
+export class AppModule {}

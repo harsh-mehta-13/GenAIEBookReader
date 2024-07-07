@@ -6,21 +6,18 @@ import Epub from 'epubjs';
 @Component({
   selector: 'app-book-reader',
   templateUrl: './book-reader.component.html',
-  styleUrl: './book-reader.component.css'
+  styleUrl: './book-reader.component.scss',
 })
 export class BookReaderComponent implements OnInit {
   book!: Book;
-  rendition!: Rendition
-  title: string = "";
-  navOpen: boolean = true;
+  rendition!: Rendition;
+  title: string = '';
   chapters!: NavItem[];
 
-  constructor() {
-
-  }
+  constructor() {}
 
   ngOnInit() {
-    this.book = Epub("mock/books/Amish Tripathi - Shiva's Trilogy 1 _ The Immortals of Meluha-Westland.epub");
+    this.book = Epub('mock/books/pg1513-images-3.epub');
     // this.book.renderTo("viewer");
     this.book.loaded.metadata.then((meta) => {
       this.title = meta.title;
@@ -28,33 +25,38 @@ export class BookReaderComponent implements OnInit {
       console.log(meta);
     });
     this.storeChapter();
-
-    this.rendition = this.book.renderTo('viewer', { flow: 'auto', width: '100%', height: '100%' });
+    // this.book.
+    this.rendition = this.book.renderTo('viewer', {
+      width: '100%',
+      height: '100%',
+      spread: 'auto', // Adjust spread settings here
+      minSpreadWidth: 900, // Example value, adjust based on your layout
+    });
     this.rendition.display();
-
+    this.rendition.on('locationChanged', (loc: any) => {
+      console.log(loc);
+    });
   }
 
   prevPage() {
     this.rendition.prev();
-  };
+  }
 
   nextPage() {
     this.rendition.next();
-  };
+  }
 
   displayChapter(chapter: any) {
     this.rendition.display(chapter.href);
-  };
-
-  toggleNav() {
-    this.navOpen = !this.navOpen;
-  };
+  }
 
   storeChapter() {
     this.book.loaded.navigation.then((nav) => {
+      console.log(nav);
       this.chapters = nav.toc;
-      console.log(this.chapters);
+    });
+    this.book.ready.then((a) => {
+      console.log(a);
     });
   }
-
 }

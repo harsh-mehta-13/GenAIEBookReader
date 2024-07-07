@@ -1,1 +1,21 @@
-<p>book-library works!</p>
+<div class="container">
+  <div class="top-container">
+    <h1>Library</h1>
+  </div>
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav
+      #sidenav
+      mode="side"
+      position="start"
+      opened="true"
+      class="nav-bar"
+    >
+      <mat-nav-list>
+        <a mat-button href="#">Link</a>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <div style="width: 100%; height: 100%; background-color: aqua"></div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

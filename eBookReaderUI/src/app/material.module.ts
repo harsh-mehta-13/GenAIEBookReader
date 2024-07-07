@@ -7,26 +7,32 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
-    imports: [
-        MatSlideToggleModule,
-        MatIconModule,
-        MatButtonModule,
-        MatToolbarModule,
-        MatSidenavModule,
-        MatListModule,
-        CommonModule,
-        MatCardModule,
-    ],
-    exports: [
-        MatSlideToggleModule,
-        MatIconModule,
-        MatButtonModule,
-        MatToolbarModule,
-        MatSidenavModule,
-        MatListModule,
-        MatCardModule
-    ]
+  imports: [
+    MatSlideToggleModule,
+    MatIconModule,
+    MatButtonModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatListModule,
+    CommonModule,
+    MatCardModule,
+    MatTabsModule,
+    MatMenuModule,
+  ],
+  exports: [
+    MatSlideToggleModule,
+    MatIconModule,
+    MatButtonModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatListModule,
+    MatCardModule,
+    MatTabsModule,
+    MatMenuModule,
+  ],
 })
-export class MaterialModule { }
+export class MaterialModule {}
