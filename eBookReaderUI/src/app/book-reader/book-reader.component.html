@@ -12,9 +12,9 @@
         <mat-icon fontIcon="arrow_forward_ios"></mat-icon>
       </button>
     </div>
-    <button mat-icon-button (click)="rightSidenav.toggle()">
+    <!-- <button mat-icon-button (click)="rightSidebar.toggle()">
       <mat-icon>menu</mat-icon>
-    </button>
+    </button> -->
   </div>
 
   <mat-sidenav-container>
@@ -36,12 +36,12 @@
     </mat-sidenav>
 
     <mat-sidenav
-      #rightSidenav
+      #rightSidebar
       mode="over"
       [fixedInViewport]="false"
       position="end"
     >
-      <!-- CONTENT FOR RIGHT CARD -->
+      <sidebar [selectedWord]="selectedWord"></sidebar>
     </mat-sidenav>
     <mat-sidenav-content class="sidenav-container">
       <div class="wrapper">
