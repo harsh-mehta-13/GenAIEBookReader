@@ -21,8 +21,6 @@ import { BookLibraryModule } from './book-library/book-library.module';
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent],
-  providers: [
-    provideAnimationsAsync()
-  ],
+  providers: [provideAnimationsAsync()],
 })
 export class AppModule {}

@@ -1,52 +1,45 @@
-<div style="width: 100%; height: 100%">
-  <div class="top-container">
-    <button mat-button (click)="sidenav.toggle()">
-      <mat-icon>menu</mat-icon>
+<div class="top-container">
+  <button mat-button (click)="sidenav.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <h1>{{ title }}</h1>
+  <div class="controls">
+    <button mat-button (click)="prevPage()">
+      <mat-icon fontIcon="arrow_back_ios"></mat-icon>
     </button>
-    <h1>{{ title }}</h1>
-    <div class="controls">
-      <button mat-button (click)="prevPage()">
-        <mat-icon fontIcon="arrow_back_ios"></mat-icon>
-      </button>
-      <button mat-button (click)="nextPage()">
-        <mat-icon fontIcon="arrow_forward_ios"></mat-icon>
-      </button>
-    </div>
-    <!-- <button mat-icon-button (click)="rightSidebar.toggle()">
-      <mat-icon>menu</mat-icon>
-    </button> -->
+    <button mat-button (click)="nextPage()">
+      <mat-icon fontIcon="arrow_forward_ios"></mat-icon>
+    </button>
   </div>
-
-  <mat-sidenav-container>
-    <mat-sidenav
-      #sidenav
-      mode="over"
-      [fixedInViewport]="false"
-      position="start"
-    >
-      <mat-nav-list>
-        <a
-          mat-list-item
-          (click)="displayChapter(chapter)"
-          *ngFor="let chapter of chapters"
-        >
-          {{ chapter.label.trim() }}
-        </a>
-      </mat-nav-list>
-    </mat-sidenav>
-
-    <mat-sidenav
-      #rightSidebar
-      mode="over"
-      [fixedInViewport]="false"
-      position="end"
-    >
-      <sidebar [selectedWord]="selectedWord"></sidebar>
-    </mat-sidenav>
-    <mat-sidenav-content class="sidenav-container">
-      <div class="wrapper">
-        <div id="viewer"></div>
-      </div>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
 </div>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="over" [fixedInViewport]="false" position="start">
+    <mat-nav-list>
+      <a
+        mat-list-item
+        (click)="displayChapter(chapter)"
+        *ngFor="let chapter of chapters"
+      >
+        {{ chapter.label.trim() }}
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav
+    #rightSidebar
+    mode="over"
+    [fixedInViewport]="false"
+    position="end"
+  >
+    <sidebar [selectedWord]="selectedWord"></sidebar>
+  </mat-sidenav>
+  <mat-sidenav-content class="sidenav-container">
+    <div id="viewer"></div>
+    <button mat-button class="chatbot-btn">
+      <span class="material-symbols-outlined"> face_2 </span>
+    </button>
+    <app-chatbot class="chatbot-box"></app-chatbot>
+    <!-- <div ></div> -->
+  </mat-sidenav-content>
+</mat-sidenav-container>
