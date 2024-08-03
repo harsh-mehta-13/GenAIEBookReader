@@ -6,6 +6,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { Character, Place } from '../../models/book';
+import { AppService } from '../../app.service';
 @Component({
   selector: 'sidebar',
   templateUrl: './sidebar.component.html',
@@ -18,36 +19,45 @@ export class sidebarComponent implements OnInit, OnChanges {
   showImg: boolean = false;
   content: string = '';
   imageUrl: string = '';
+  selectedBookId: string = '';
 
   characters: Character[] = [];
   places: Place[] = [];
 
-  ngOnInit(): void {
-    this.characters = JSON.parse(localStorage.getItem('characters') || '[]');
-    this.places = JSON.parse(localStorage.getItem('places') || '[]');
-  }
+  constructor(private service: AppService) {}
+
+  ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['selectedWord'] && changes['selectedWord'].currentValue) {
+      this.selectedBookId = JSON.parse(
+        localStorage.getItem('selectedBookId') || ''
+      );
+      if (this.selectedBookId) {
+        let dat = JSON.parse(localStorage.getItem(this.selectedBookId) || '{}');
+        if (dat) {
+          this.characters = dat.characters;
+          this.places = dat.locations;
+        }
+      }
       this.checkWord();
     }
   }
 
   checkWord() {
-    let ele = this.checkIfCharacter()
-      ? this.checkIfCharacter()
-      : this.checkIfPlace()
-      ? this.checkIfPlace()
-      : undefined;
+    let ele = this.checkIfCharacter() ?? this.checkIfPlace() ?? undefined;
     if (ele) {
       this.content = ele.description;
-      this.imageUrl = ele.imgUrl;
+      this.imageUrl = ele.image_path;
       this.showImg = true;
     } else {
       // make api call to get meaning of the word
-      this.wordCategory = '';
-      this.showImg = false;
-      this.content = 'word meaning to be added';
+      this.service.getWordMeaning(this.selectedWord).subscribe((data) => {
+        this.showImg = false;
+        this.wordCategory = '';
+        if (data) this.content = data;
+        else this.content = 'Meaning not found';
+      });
     }
   }
 
@@ -72,6 +82,6 @@ export class sidebarComponent implements OnInit, OnChanges {
   }
 
   addToVocab() {
-    console.log('Add to vocab');
+    this.service.addWordInVocab(this.selectedWord, this.selectedBookId).subscribe();
   }
 }

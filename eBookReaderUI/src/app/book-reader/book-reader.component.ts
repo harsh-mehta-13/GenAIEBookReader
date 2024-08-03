@@ -4,6 +4,8 @@ import { NavItem } from 'epubjs/types/navigation';
 import Epub from 'epubjs';
 import { MatSidenav } from '@angular/material/sidenav';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BookDetails } from '../models/book';
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'app-book-reader',
@@ -20,28 +22,50 @@ export class BookReaderComponent implements OnInit {
   isChatBotOpen: boolean = false;
   isPlacesBoxOpen: boolean = false;
   isCharsBoxOpen: boolean = false;
+  bookData: BookDetails[] = [];
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(private route: ActivatedRoute, private router: Router, private service: AppService) {}
 
   ngOnInit() {
-    let bookPath = '';
-    this.route.params.subscribe((params) => {
-      bookPath = JSON.parse(localStorage.getItem('bookData') || '[]')[
-        params['id']
-      ].path;
+    this.bookData = JSON.parse(localStorage.getItem('bookData') || '[]');
 
+    this.route.params.subscribe((params) => {
+      let b_id = Number(params['id']);
+      let bookPath =
+        this.bookData.find(
+          (book: BookDetails) => book['b_id'] === b_id
+        )?.path ?? '';
+
+      if (this.loadBook(bookPath)) {
+        this.storeChapter();
+
+        this.service.getBookCnL(b_id).subscribe((data) =>{
+          console.log(data);
+          localStorage.setItem(b_id.toString(), JSON.stringify({characters: data.characters ,locations: data.locations}));
+        } );
+
+        this.renderBook();
+        this.loadAndGenerateLocations();
+        this.getCurrentCompletionPercentage();
+        this.getDoubledClickedWord();
+      }
+      else {
+        console.error('Book not found');
+      }
+    });
+  }
+
+  loadBook(bookPath: string): boolean {
+    if (!bookPath) {
+      console.error('Book path is not provided');
+      return false;
+    } else {
       this.book = Epub(bookPath);
       this.book.loaded.metadata.then((meta) => {
         this.title = meta.title;
       });
-
-      this.storeChapter();
-      this.renderBook();
-      this.loadAndGenerateLocations();
-      this.getCurrentCompletionPercentage();
-
-      this.getDoubledClickedWord();
-    });
+      return true;
+    }
   }
 
   storeChapter() {

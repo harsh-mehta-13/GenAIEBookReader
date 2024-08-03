@@ -1,27 +1,35 @@
 <div class="top-container">
-  <h1>Book Library</h1>
-  <h1>vocab</h1>
+  <button mat-button (click)="showLib()">
+    <h1>Book Library</h1>
+  </button>
+  <button mat-button (click)="showVocab()">
+    <h1>vocab</h1>
+  </button>
 </div>
 
-<div class="library-container">
-  <mat-card
-    *ngFor="let book of bookData; index as i"
-    class="book-details"
-    (click)="openBook(i)"
-  >
-    <img
-      class="book-image"
-      mat-card-image
-      src="https://via.placeholder.com/150"
-      alt="Book Image"
-    />
+<div class="library-container" *ngIf="!showVocabPage">
+  <mat-card *ngFor="let book of bookData; index as i" class="book-details" (click)="openBook(i)">
+    <img class="book-image" mat-card-image src="{{ book.cover_path ?? 'assets/bookimgbackup.jpg'}}" alt="Book Image" />
     <div style="padding: 2%">
-      <mat-card-title
+      <!-- <mat-card-title
         ><p>{{ book.title }}</p></mat-card-title
-      >
-      <mat-card-subtitle
-        ><p>{{ book.creator }}</p></mat-card-subtitle
-      >
+      > -->
+      <!-- <mat-card-subtitle
+        ><p>{{ book.author }}</p></mat-card-subtitle
+      > -->
     </div>
+  </mat-card>
+</div>
+
+<div class="vocab-container" *ngIf="showVocabPage">
+
+  <mat-card *ngFor="let vocab of vocabData;" class="vocab-item-container">
+    <mat-card-title class="vocab-book-title"> {{vocab[0]}}</mat-card-title>
+    <mat-card-content *ngFor="let item of vocab[1]">
+      <div class="vocab-word-container">
+        <p class="word">{{item.word}}</p>
+        <p class="meaning">{{item.definition}}</p>
+      </div>
+    </mat-card-content>
   </mat-card>
 </div>

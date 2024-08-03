@@ -27,8 +27,8 @@
               },
               {
                 "glob": "**/*",
-                "input": "src/app/mock/books/",
-                "output": "/mock/books/"
+                "input": "src/app/mock/",
+                "output": "/mock/"
               },
               {
                 "glob": "**/*",

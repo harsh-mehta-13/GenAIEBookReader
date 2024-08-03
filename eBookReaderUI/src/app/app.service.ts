@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -12,9 +12,33 @@ export class AppService {
   constructor(private http: HttpClient) {}
 
   // Example method to make a GET request to the backend API
-  getData(): Observable<any> {
+  getAllBooks(): Observable<any> {
     return this.http
-      .get<any>(`${this.apiUrl}/data`)
+      .get<any>(`${this.apiUrl}/books/all/`)
+      .pipe(catchError(this.handleError));
+  }
+
+  getBookCnL(bookId: number): Observable<any> {
+    return this.http
+      .get<any>(`${this.apiUrl}/combined/${bookId}`)
+      .pipe(catchError(this.handleError));
+  }
+
+  getVocacabulary(): Observable<any> {
+    return this.http
+      .get<any>(`${this.apiUrl}/vocabulary/`)
+      .pipe(catchError(this.handleError));
+  }
+
+  getWordMeaning(word: string): Observable<any> { 
+    return this.http
+      .get<any>(`${this.apiUrl}/vocabulary/meaning/${word}`)
+      .pipe(catchError(this.handleError));
+  }
+
+  addWordInVocab(word: string, bookId: number | string): Observable<any> {
+    return this.http
+      .get<any>(`${this.apiUrl}/vocabulary/add/${bookId}/${word}`)
       .pipe(catchError(this.handleError));
   }
 
@@ -25,9 +49,10 @@ export class AppService {
       .pipe(catchError(this.handleError));
   }
 
-  ChatWithChatBot(userInput: string): Observable<any> {
+  ChatWithChatBot(userInput: string, bookId: number): Observable<any> {
+    const headers = new HttpHeaders({'Content-Type': 'application/json'});
     return this.http
-      .post<any>(`${this.apiUrl}/chatbot/chat/${bookId}`, null)
+      .post<any>(`${this.apiUrl}/chatbot/chat/${bookId}`, {"userInput": userInput}, { headers: headers})
       .pipe(catchError(this.handleError));
   }
   // Add more methods for other API calls as needed

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import Epub, { Book } from 'epubjs';
-import { BookDetails } from '../models/book';
+import { BookDetails, VocabData, Vocabulary } from '../models/book';
 import { Router } from '@angular/router';
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'app-book-library',
@@ -9,46 +10,62 @@ import { Router } from '@angular/router';
   styleUrl: './book-library.component.scss',
 })
 export class BookLibraryComponent implements OnInit {
-  bookPath: string[] = [
-    'mock/books/pg1513-images-3.epub',
-    'mock/books/pg16-images-3.epub',
-    'mock/books/pg132-images-3.epub',
-    'mock/books/pg100-images-3.epub',
-    'mock/books/pg1513-images-3.epub',
-    'mock/books/pg2701-images-3.epub',
-    'mock/books/pg67098-images-3.epub',
-  ];
-  imgUrl = '';
   bookData: BookDetails[] = [];
+  showVocabPage: boolean = false;
+  vocabData: Array<[string, Vocabulary[]]> = [];
 
-  constructor(private route: Router) {
-    this.bookPath.forEach(async (path, index) => {
-      this.addMetaData(path);
-    });
+  constructor(private route: Router, private service: AppService) {
   }
 
   ngOnInit(): void {
+    this.service.getAllBooks().subscribe(
+      (data) => {
+        console.log(data);
+        data.forEach((book: any) => {
+          this.bookData.push({
+            b_id: book.b_id,
+            title: book.book_title,
+            author: book.author,
+            path: book.file_path.substring(book.file_path.indexOf('mock/')),
+            cover_path: (book.cover_image_path &&  book.cover_image_path.length > 5 )?book.cover_image_path.substring(book.cover_image_path.indexOf('mock/')): null,
+            last_read: book.last_read,
+            summary: book.summary,
+          });
+        });
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+
     setTimeout(() => {
       console.log(this.bookData);
       localStorage.setItem('bookData', JSON.stringify(this.bookData));
     }, 1000);
   }
 
-  addMetaData(path: string): any {
-    const book = Epub(path);
-    book.loaded.metadata.then((meta) => {
-      let data = {
-        title: meta.title,
-        creator: meta.creator,
-        pubDate: meta.pubdate,
-        path: path,
-      };
-      this.bookData.push(data);
+  openBook(index: number) {
+    console.log(this.bookData[index].path);
+    localStorage.setItem('selectedBookId', this.bookData[index].b_id.toString());
+    this.route.navigate(['/book-reader', this.bookData[index].b_id]);
+  }
+
+  showVocab(){
+    this.showVocabPage = true;
+    this.getVocab();
+  }
+
+  showLib(){
+    this.showVocabPage = false;
+  }
+
+  getVocab() {
+    this.service.getVocacabulary().subscribe((data) => {
+      let vdat: VocabData = data;
+      this.vocabData= Object.entries(vdat);
+      console.log(this.vocabData);
+
     });
   }
 
-  openBook(index: number) {
-    console.log(this.bookData[index].path);
-    this.route.navigate(['/book-reader', index]);
-  }
 }
