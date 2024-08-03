@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -30,7 +34,7 @@ export class AppService {
       .pipe(catchError(this.handleError));
   }
 
-  getWordMeaning(word: string): Observable<any> { 
+  getWordMeaning(word: string): Observable<any> {
     return this.http
       .get<any>(`${this.apiUrl}/vocabulary/meaning/${word}`)
       .pipe(catchError(this.handleError));
@@ -43,16 +47,23 @@ export class AppService {
   }
 
   // Example method to make a POST request to the backend API
-  initiateChatBot(bookId: number): Observable<any> {
+  initiateChat(bookId: string): Observable<any> {
     return this.http
       .post<any>(`${this.apiUrl}/chatbot/start/${bookId}`, null)
       .pipe(catchError(this.handleError));
   }
 
-  ChatWithChatBot(userInput: string, bookId: number): Observable<any> {
-    const headers = new HttpHeaders({'Content-Type': 'application/json'});
+  chat(userInput: string, bookId: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'accept': 'application/json',
+    });
     return this.http
-      .post<any>(`${this.apiUrl}/chatbot/chat/${bookId}`, {"userInput": userInput}, { headers: headers})
+      .post<any>(
+        `${this.apiUrl}/chatbot/chat/${bookId}`,
+        `user_input=${userInput}`,
+        { headers: headers }
+      )
       .pipe(catchError(this.handleError));
   }
   // Add more methods for other API calls as needed

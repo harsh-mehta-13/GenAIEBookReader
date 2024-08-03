@@ -33,7 +33,10 @@
   </div>
 </div>
 
-<div class="places-box" [ngClass]="{ hidden: !isPlacesBoxOpen }"></div>
+<div class="places-box" [ngClass]="{ hidden: !isPlacesBoxOpen }">
+  <app-places [placesData]="selectedBookData?.Locations">
+  </app-places>
+</div>
 <div class="chars-box" [ngClass]="{ hidden: !isCharsBoxOpen }"></div>
 <mat-sidenav-container>
   <mat-sidenav #sidenav mode="over" [fixedInViewport]="false" position="start">

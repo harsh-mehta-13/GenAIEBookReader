@@ -1,29 +1,41 @@
 .chat-history {
-    border: 1px solid #ccc;
+    // border: 1px solid #ccc;
     margin-bottom: 10px;
     padding: 10px;
     height: 300px;
     overflow-y: auto;
   }
   
-  .chat-history .user {
+  .chat-history .user-message {
     text-align: right;
-    color: blue;
+    color: rgb(47, 54, 69);
+    border: 1px solid #EEEDEB;
   }
   
-  .chat-history .bot {
+  .chat-history .bot-message {
     text-align: left;
-    color: green;
+    color: rgb(0, 92, 187);
   }
   
-  input[type="text"] {
-    width: calc(100% - 60px);
-    padding: 10px;
-    margin-right: 5px;
-    box-sizing: border-box;
+  mat-form-field{
+    width: 80%;
+    // margin: 2%;
+    padding: 2%;
   }
   
   button {
-    padding: 10px;
-    cursor: pointer;
+    // padding: 0.5rem;
+    padding: 2.5%;
+    // width: 20%;
+    height: 100%;
+    border-radius: 0% ;
+    margin-bottom: 3%;
+    // border: 1px solid black;
+  }
+
+  .inp-container{
+    // height: 50%;
+    width: 100%;
+    display: flex;
+    align-items: center;
   }

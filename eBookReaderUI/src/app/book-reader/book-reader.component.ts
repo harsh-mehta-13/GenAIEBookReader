@@ -23,6 +23,7 @@ export class BookReaderComponent implements OnInit {
   isPlacesBoxOpen: boolean = false;
   isCharsBoxOpen: boolean = false;
   bookData: BookDetails[] = [];
+  selectedBookData: BookDetails | undefined;
 
   constructor(private route: ActivatedRoute, private router: Router, private service: AppService) {}
 
@@ -31,12 +32,14 @@ export class BookReaderComponent implements OnInit {
 
     this.route.params.subscribe((params) => {
       let b_id = Number(params['id']);
-      let bookPath =
+
+      this.selectedBookData =
         this.bookData.find(
           (book: BookDetails) => book['b_id'] === b_id
-        )?.path ?? '';
-
-      if (this.loadBook(bookPath)) {
+        );
+      
+        if(this.selectedBookData){
+      if (this.loadBook(this.selectedBookData.path)) {
         this.storeChapter();
 
         this.service.getBookCnL(b_id).subscribe((data) =>{
@@ -52,6 +55,7 @@ export class BookReaderComponent implements OnInit {
       else {
         console.error('Book not found');
       }
+    }
     });
   }
 

@@ -9,6 +9,8 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatMenuModule } from '@angular/material/menu';
+import {MatInputModule} from '@angular/material/input';
+
 
 @NgModule({
   imports: [
@@ -22,6 +24,7 @@ import { MatMenuModule } from '@angular/material/menu';
     MatCardModule,
     MatTabsModule,
     MatMenuModule,
+    MatInputModule
   ],
   exports: [
     MatSlideToggleModule,
@@ -33,6 +36,7 @@ import { MatMenuModule } from '@angular/material/menu';
     MatCardModule,
     MatTabsModule,
     MatMenuModule,
+    MatInputModule
   ],
 })
 export class MaterialModule {}

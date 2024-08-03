@@ -1,0 +1,8 @@
+<div style="width: 50px; height: 50px; background-color: green;"></div>
+<mat-card *ngFor="let place of placesData" class="places-conatiner">
+    <img class="places-image" mat-card-image src="{{ place.image_path || 'assets/landscape_placeholder_img.png'}}" alt="Book Image" />
+    <mat-card-content>
+        <h2>{{ place.name }}</h2>
+        <p>{{ place.description }}</p>
+    </mat-card-content>
+</mat-card>
