@@ -1,24 +1,27 @@
-<mat-card>
-  <mat-card-header>
-    <mat-card-title><h1>Book Library</h1></mat-card-title>
-  </mat-card-header>
+<div class="top-container">
+  <h1>Book Library</h1>
+  <h1>vocab</h1>
+</div>
 
-  <mat-card-content class="library-container">
-    <mat-card *ngFor="let book of bookData; index as i" class="book-details">
-      <mat-card-title>{{ book.title }}</mat-card-title>
-      <img
-        class="book-image"
-        mat-card-image
-        src="https://via.placeholder.com/150"
-        alt="Book Image"
-      />
-      <mat-card-content>
-        <p>Author: {{ book.creator }}</p>
-        <p>Date: {{ book.pubDate }}</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button (click)="openBook(i)">Read</button>
-      </mat-card-actions>
-    </mat-card>
-  </mat-card-content>
-</mat-card>
+<div class="library-container">
+  <mat-card
+    *ngFor="let book of bookData; index as i"
+    class="book-details"
+    (click)="openBook(i)"
+  >
+    <img
+      class="book-image"
+      mat-card-image
+      src="https://via.placeholder.com/150"
+      alt="Book Image"
+    />
+    <div style="padding: 2%">
+      <mat-card-title
+        ><p>{{ book.title }}</p></mat-card-title
+      >
+      <mat-card-subtitle
+        ><p>{{ book.creator }}</p></mat-card-subtitle
+      >
+    </div>
+  </mat-card>
+</div>

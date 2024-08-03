@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-chatbot',
@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./chatbot.component.scss'],
 })
 export class ChatbotComponent {
+  @Output() toggleChatBot = new EventEmitter<void>();
   userInput: string = '';
   chatHistory: Array<{ sender: string; text: string }> = [];
 
@@ -30,5 +31,9 @@ export class ChatbotComponent {
       // Clear input field
       this.userInput = '';
     }, 500); // Simulate network delay
+  }
+
+  closeChatBot(): void {
+    this.toggleChatBot.emit();
   }
 }

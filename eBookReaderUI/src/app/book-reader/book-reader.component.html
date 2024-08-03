@@ -2,7 +2,9 @@
   <button mat-button (click)="sidenav.toggle()">
     <mat-icon>menu</mat-icon>
   </button>
+
   <h1>{{ title }}</h1>
+
   <div class="controls">
     <button mat-button (click)="prevPage()">
       <mat-icon fontIcon="arrow_back_ios"></mat-icon>
@@ -11,8 +13,28 @@
       <mat-icon fontIcon="arrow_forward_ios"></mat-icon>
     </button>
   </div>
+
+  <div class="places-btn">
+    <button mat-button (click)="togglePlacesBox()">
+      <span class="material-symbols-outlined"> landscape </span>
+    </button>
+  </div>
+
+  <div class="chars-btn">
+    <button mat-button (click)="toggleCharsBox()">
+      <span class="material-symbols-outlined"> groups </span>
+    </button>
+  </div>
+
+  <div>
+    <button mat-button (click)="goToLibrary()">
+      <span class="material-symbols-outlined"> library_books </span>
+    </button>
+  </div>
 </div>
 
+<div class="places-box" [ngClass]="{ hidden: !isPlacesBoxOpen }"></div>
+<div class="chars-box" [ngClass]="{ hidden: !isCharsBoxOpen }"></div>
 <mat-sidenav-container>
   <mat-sidenav #sidenav mode="over" [fixedInViewport]="false" position="start">
     <mat-nav-list>
@@ -36,10 +58,19 @@
   </mat-sidenav>
   <mat-sidenav-content class="sidenav-container">
     <div id="viewer"></div>
-    <button mat-button class="chatbot-btn">
+    <button
+      mat-button
+      class="chatbot-btn"
+      [ngClass]="{ hidden: isChatBotOpen }"
+      (click)="toggleChatBot()"
+    >
       <span class="material-symbols-outlined"> face_2 </span>
     </button>
-    <app-chatbot class="chatbot-box"></app-chatbot>
+    <app-chatbot
+      class="chatbot-box"
+      (toggleChatBot)="toggleChatBot()"
+      [ngClass]="{ hidden: !isChatBotOpen }"
+    ></app-chatbot>
     <!-- <div ></div> -->
   </mat-sidenav-content>
 </mat-sidenav-container>

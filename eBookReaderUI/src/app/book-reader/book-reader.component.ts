@@ -3,7 +3,7 @@ import { Book, Contents, Rendition } from 'epubjs/types';
 import { NavItem } from 'epubjs/types/navigation';
 import Epub from 'epubjs';
 import { MatSidenav } from '@angular/material/sidenav';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-book-reader',
@@ -17,8 +17,11 @@ export class BookReaderComponent implements OnInit {
   chapters!: NavItem[];
   @ViewChild('rightSidebar') rightSidebar!: MatSidenav;
   selectedWord: string = '';
+  isChatBotOpen: boolean = false;
+  isPlacesBoxOpen: boolean = false;
+  isCharsBoxOpen: boolean = false;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit() {
     let bookPath = '';
@@ -136,5 +139,24 @@ export class BookReaderComponent implements OnInit {
 
   displayChapter(chapter: any) {
     this.rendition.display(chapter.href);
+  }
+
+  toggleChatBot() {
+    this.isChatBotOpen = !this.isChatBotOpen;
+  }
+  togglePlacesBox() {
+    this.isPlacesBoxOpen = !this.isPlacesBoxOpen;
+    if (this.isCharsBoxOpen) {
+      this.isCharsBoxOpen = false;
+    }
+  }
+  toggleCharsBox() {
+    this.isCharsBoxOpen = !this.isCharsBoxOpen;
+    if (this.isPlacesBoxOpen) {
+      this.isPlacesBoxOpen = false;
+    }
+  }
+  goToLibrary() {
+    this.router.navigate(['/book-library']);
   }
 }
