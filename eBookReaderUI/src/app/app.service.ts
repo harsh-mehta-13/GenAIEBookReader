@@ -40,13 +40,18 @@ export class AppService {
       .pipe(catchError(this.handleError));
   }
 
+  getWordDef(bookId: string, word: string): Observable<any> {
+    return this.http
+      .get<any>(`${this.apiUrl}/vocabulary/word_type/${bookId}/${word}`)
+      .pipe(catchError(this.handleError));
+  }
+
   addWordInVocab(word: string, bookId: number | string): Observable<any> {
     return this.http
       .get<any>(`${this.apiUrl}/vocabulary/add/${bookId}/${word}`)
       .pipe(catchError(this.handleError));
   }
 
-  // Example method to make a POST request to the backend API
   initiateChat(bookId: string): Observable<any> {
     return this.http
       .post<any>(`${this.apiUrl}/chatbot/start/${bookId}`, null)
@@ -66,7 +71,18 @@ export class AppService {
       )
       .pipe(catchError(this.handleError));
   }
-  // Add more methods for other API calls as needed
+  
+  getTotalSummary(bookId: string): Observable<any> {
+    return this.http
+      .post<any>(`${this.apiUrl}/summary/analyze_story/${bookId}/casual`,null)
+      .pipe(catchError(this.handleError));
+  }
+
+  getChapterSummary(bookId: string, chapterId: string): Observable<any> {
+    return this.http
+      .get<any>(`${this.apiUrl}/chapter_summary/${bookId}/${chapterId}`)
+      .pipe(catchError(this.handleError));
+  }
 
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'An error occurred';

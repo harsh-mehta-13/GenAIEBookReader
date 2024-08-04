@@ -4,7 +4,7 @@ import { NavItem } from 'epubjs/types/navigation';
 import Epub from 'epubjs';
 import { MatSidenav } from '@angular/material/sidenav';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BookDetails } from '../models/book';
+import { BookDetails, Character, Place } from '../models/book';
 import { AppService } from '../app.service';
 
 @Component({
@@ -23,9 +23,16 @@ export class BookReaderComponent implements OnInit {
   isPlacesBoxOpen: boolean = false;
   isCharsBoxOpen: boolean = false;
   bookData: BookDetails[] = [];
-  selectedBookData: BookDetails | undefined;
+  selectedBookData?: BookDetails;
+  locationsData: Place[] = [];
+  charsData: Character[] = [];
+  isSummaryBoxOpen: boolean = false;
 
-  constructor(private route: ActivatedRoute, private router: Router, private service: AppService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private service: AppService
+  ) {}
 
   ngOnInit() {
     this.bookData = JSON.parse(localStorage.getItem('bookData') || '[]');
@@ -33,29 +40,34 @@ export class BookReaderComponent implements OnInit {
     this.route.params.subscribe((params) => {
       let b_id = Number(params['id']);
 
-      this.selectedBookData =
-        this.bookData.find(
-          (book: BookDetails) => book['b_id'] === b_id
-        );
-      
-        if(this.selectedBookData){
-      if (this.loadBook(this.selectedBookData.path)) {
-        this.storeChapter();
+      this.selectedBookData = this.bookData.find(
+        (book: BookDetails) => book['b_id'] === b_id
+      );
 
-        this.service.getBookCnL(b_id).subscribe((data) =>{
-          console.log(data);
-          localStorage.setItem(b_id.toString(), JSON.stringify({characters: data.characters ,locations: data.locations}));
-        } );
+      // setTimeout(()=>{if (temp) this.selectedBookData = temp;},100);
 
-        this.renderBook();
-        this.loadAndGenerateLocations();
-        this.getCurrentCompletionPercentage();
-        this.getDoubledClickedWord();
+      if (this.selectedBookData) {
+        if (this.loadBook(this.selectedBookData.path)) {
+          this.storeChapter();
+
+          this.service.getBookCnL(b_id).subscribe((data) => {
+            if (data) {
+              console.log(data);
+              localStorage.setItem(b_id.toString(),JSON.stringify({characters: data.characters,locations: data.locations}));
+              this.locationsData = data.locations;
+              this.charsData = data.characters;              
+            }
+          });
+
+          this.renderBook();
+          this.loadAndGenerateLocations();
+          this.getCurrentCompletionPercentage();
+          this.getDoubledClickedWord();
+          //   setTimeout(()=>{this.getDoubledClickedWord();},100)
+        } else {
+          console.error('Book not found');
+        }
       }
-      else {
-        console.error('Book not found');
-      }
-    }
     });
   }
 
@@ -76,6 +88,13 @@ export class BookReaderComponent implements OnInit {
     this.book.loaded.navigation.then((nav) => {
       console.log(nav);
       this.chapters = nav.toc;
+      console.log("This is the information: " + nav.toc);
+      console.log("This is the information: " + this.chapters);
+  
+      // Log chapter names
+      this.chapters.forEach((chapter) => {
+        console.log("Chapter name: " + chapter.label);
+      });
     });
   }
 
@@ -83,9 +102,23 @@ export class BookReaderComponent implements OnInit {
     this.rendition = this.book.renderTo('viewer', {
       width: '100%',
       height: '100%',
-      spread: 'auto', // Adjust spread settings here
-      minSpreadWidth: 900, // Example value, adjust based on your layout
+      spread: 'none', // Adjust spread settings here
+      minSpreadWidth: 700, // Example value, adjust based on your layout
     });
+
+    this.rendition.themes.register('custom', {
+      'body, html': {
+        'font-size': '18px', // Adjust the font size as needed
+        'background-color': 'transparent!important', // Adjust the background color as needed
+        'font-family': 'Roboto, sans-serif',
+        'line-height':'1.7',
+         
+      },
+      '.x-ebookmaker-cover': {
+        'background-color': 'transparent!important'
+      }
+    });
+    this.rendition.themes.select('custom');
     this.rendition.display();
   }
 
@@ -117,11 +150,13 @@ export class BookReaderComponent implements OnInit {
       let currentSection = this.book.spine.get(currentLocation.start);
       if (currentSection) {
         console.log('Current Section:', currentSection);
+        console.log('Total Chapters: ', this.chapters);
         let currentChapter = this.chapters.find(
           (chapter) => chapter.href.split('#')[0] === currentSection.href
         );
         if (currentChapter) {
           console.log('Current Chapter:', currentChapter.label);
+          localStorage.setItem('lastReadChapter', JSON.stringify(currentChapter.label));
           return currentChapter;
         }
       }
@@ -157,15 +192,24 @@ export class BookReaderComponent implements OnInit {
     this.rightSidebar.toggle();
   }
 
+  closeIfOpenRightSidebar() {
+    this.rightSidebar.opened ? this.rightSidebar.close() : null;
+  }
+
   prevPage() {
     this.rendition.prev();
+    this.getDoubledClickedWord();
+    this.closeIfOpenRightSidebar();
   }
 
   nextPage() {
     this.rendition.next();
+    this.getDoubledClickedWord();
+    this.closeIfOpenRightSidebar();
   }
 
   displayChapter(chapter: any) {
+    this.closeIfOpenRightSidebar();
     this.rendition.display(chapter.href);
   }
 
@@ -173,18 +217,27 @@ export class BookReaderComponent implements OnInit {
     this.isChatBotOpen = !this.isChatBotOpen;
   }
   togglePlacesBox() {
+    this.closeIfOpenRightSidebar();
     this.isPlacesBoxOpen = !this.isPlacesBoxOpen;
-    if (this.isCharsBoxOpen) {
-      this.isCharsBoxOpen = false;
-    }
+    this.isCharsBoxOpen = false;
+    this.isSummaryBoxOpen = false;
   }
   toggleCharsBox() {
+    this.closeIfOpenRightSidebar();
     this.isCharsBoxOpen = !this.isCharsBoxOpen;
-    if (this.isPlacesBoxOpen) {
-      this.isPlacesBoxOpen = false;
-    }
+    this.isPlacesBoxOpen = false;
+    this.isSummaryBoxOpen = false;
+    
   }
   goToLibrary() {
+    this.closeIfOpenRightSidebar();
     this.router.navigate(['/book-library']);
+  }
+
+  toggleSummary(){
+    this.closeIfOpenRightSidebar();
+    this.isSummaryBoxOpen = !this.isSummaryBoxOpen;
+    this.isPlacesBoxOpen = false;
+    this.isCharsBoxOpen = false;
   }
 }

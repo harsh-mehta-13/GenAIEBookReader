@@ -7,6 +7,8 @@ import {
 } from '@angular/core';
 import { Character, Place } from '../../models/book';
 import { AppService } from '../../app.service';
+import { ImageDialogComponent } from '../viewImage/view-image.component';
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'sidebar',
   templateUrl: './sidebar.component.html',
@@ -21,10 +23,13 @@ export class sidebarComponent implements OnInit, OnChanges {
   imageUrl: string = '';
   selectedBookId: string = '';
 
+  altCharImgLoc = 'assets/charimgbackup.jpeg';
+  altPlaceImgLoc = 'assets/placeimgbackup.avif';
+
   characters: Character[] = [];
   places: Place[] = [];
 
-  constructor(private service: AppService) {}
+  constructor(private service: AppService,public dialog: MatDialog) {}
 
   ngOnInit(): void {}
 
@@ -34,54 +39,47 @@ export class sidebarComponent implements OnInit, OnChanges {
         localStorage.getItem('selectedBookId') || ''
       );
       if (this.selectedBookId) {
-        let dat = JSON.parse(localStorage.getItem(this.selectedBookId) || '{}');
-        if (dat) {
-          this.characters = dat.characters;
-          this.places = dat.locations;
-        }
+        this.service
+          .getWordDef(this.selectedBookId, this.selectedWord)
+          .subscribe((data) => {
+            if (data && data.word_type === 'character') {
+              this.wordCategory = 'Character';
+              this.content = data.desc ?? 'Description not available';
+              this.imageUrl = data.image_path ?? this.altCharImgLoc;
+              this.showImg = true;
+            } else if (data && data.word_type === 'location') {
+              this.wordCategory = 'Location';
+              this.content = data.desc ?? 'Description not available';
+              this.imageUrl = data.image_path ?? this.altPlaceImgLoc;
+              this.showImg = true;
+            } else {
+              this.wordCategory = 'Meaning';
+              this.content = data.desc ?? 'Meaning not available';
+              this.showImg = false;
+              this.imageUrl = '';
+            }
+          });
       }
-      this.checkWord();
-    }
-  }
-
-  checkWord() {
-    let ele = this.checkIfCharacter() ?? this.checkIfPlace() ?? undefined;
-    if (ele) {
-      this.content = ele.description;
-      this.imageUrl = ele.image_path;
-      this.showImg = true;
-    } else {
-      // make api call to get meaning of the word
-      this.service.getWordMeaning(this.selectedWord).subscribe((data) => {
-        this.showImg = false;
-        this.wordCategory = '';
-        if (data) this.content = data;
-        else this.content = 'Meaning not found';
-      });
-    }
-  }
-
-  checkIfCharacter() {
-    let dat = this.characters.find((c) => c.name === this.selectedWord);
-    if (dat) {
-      this.wordCategory = 'Character';
-      return dat;
-    } else {
-      return undefined;
-    }
-  }
-
-  checkIfPlace() {
-    let dat = this.places.find((c) => c.name === this.selectedWord);
-    if (dat) {
-      this.wordCategory = 'Location';
-      return dat;
-    } else {
-      return undefined;
     }
   }
 
   addToVocab() {
-    this.service.addWordInVocab(this.selectedWord, this.selectedBookId).subscribe();
+    this.service
+      .addWordInVocab(this.selectedWord, this.selectedBookId)
+      .subscribe((data)=>{console.log(data)},(err)=>{console.log(err)});
+  }
+
+  openImage(){
+    let dat = {};
+    if(this.wordCategory === 'Character'){
+      dat = { imageUrl: this.imageUrl ?? this.altCharImgLoc }
+    }
+    else if(this.wordCategory === 'Location'){
+      dat = { imageUrl: this.imageUrl ?? this.altPlaceImgLoc }
+    }
+
+    this.dialog.open(ImageDialogComponent, {
+      data: dat,
+    });
   }
 }

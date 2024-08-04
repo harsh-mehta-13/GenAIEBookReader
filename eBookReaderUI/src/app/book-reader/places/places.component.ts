@@ -15,14 +15,15 @@ import { Place } from '../../models/book';
   styleUrls: ['./places.component.scss'],
 })
 export class PlacesComponent implements OnChanges {
-  @Input() placesData!: Place[] | undefined;
+  @Input() placesData:Place[] = [];
 
   constructor(private service: AppService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
+    
     if (changes['placesData'] && changes['placesData'].currentValue) {
         this.placesData = changes['placesData'].currentValue;
-        console.log("herreee"+this.placesData);
+        console.log("herreee",this.placesData);
     }
   }
 }

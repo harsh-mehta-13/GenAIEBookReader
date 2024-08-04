@@ -25,6 +25,12 @@
       <span class="material-symbols-outlined"> groups </span>
     </button>
   </div>
+  
+  <div class="summary-btn">
+    <button mat-button (click)="toggleSummary()">
+      <span class="material-symbols-outlined">summarize</span>
+    </button>
+  </div>
 
   <div>
     <button mat-button (click)="goToLibrary()">
@@ -33,11 +39,19 @@
   </div>
 </div>
 
-<div class="places-box" [ngClass]="{ hidden: !isPlacesBoxOpen }">
-  <app-places [placesData]="selectedBookData?.Locations">
-  </app-places>
+<div class="places-box" *ngIf="isPlacesBoxOpen">
+  <!-- <app-places [placesData]="locationsData"></app-places> -->
+   <app-places [placesData]="locationsData"></app-places>
 </div>
-<div class="chars-box" [ngClass]="{ hidden: !isCharsBoxOpen }"></div>
+
+<div class="chars-box"  *ngIf="isCharsBoxOpen">
+  <app-chars [charsData]="charsData"></app-chars>
+</div>
+
+<div class="summary-box"  *ngIf="isSummaryBoxOpen">
+  <app-summary></app-summary>
+</div>
+
 <mat-sidenav-container>
   <mat-sidenav #sidenav mode="over" [fixedInViewport]="false" position="start">
     <mat-nav-list>

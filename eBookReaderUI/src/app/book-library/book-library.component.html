@@ -9,7 +9,7 @@
 
 <div class="library-container" *ngIf="!showVocabPage">
   <mat-card *ngFor="let book of bookData; index as i" class="book-details" (click)="openBook(i)">
-    <img class="book-image" mat-card-image src="{{ book.cover_path ?? 'assets/bookimgbackup.jpg'}}" alt="Book Image" />
+    <img class="book-image" mat-card-image src="{{ book.cover_path || 'assets/bookimgbackup.jpg'}}" alt="Book Image" />
     <div style="padding: 2%">
       <!-- <mat-card-title
         ><p>{{ book.title }}</p></mat-card-title
