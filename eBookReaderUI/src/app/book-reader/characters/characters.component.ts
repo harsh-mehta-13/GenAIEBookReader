@@ -16,6 +16,9 @@ import {
   })
   export class CharactersComponent implements OnChanges {
     @Input() charsData: Character[] = [];
+    logImagePath(imagePath: string) {
+      console.log(imagePath);
+    }
   
     constructor(private service: AppService) {}
   

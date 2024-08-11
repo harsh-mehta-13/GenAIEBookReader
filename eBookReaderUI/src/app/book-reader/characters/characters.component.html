@@ -2,10 +2,8 @@
 <div class="chars-conatiner" >
     <span *ngFor="let char of charsData">
     <mat-card *ngIf="char.description" class="char-details">
-        <img class="places-image" mat-card-image class="img" src="{{ char.image_path || 'assets/charimgbackup.jpeg'}}"
-            alt="Book Image" />
-        <mat-card-header><p mat-card-title>{{ char.name }}</p></mat-card-header>
-            
+        <img class="places-image" mat-card-image class="img" src="{{ char.image_path || 'assets/charimgbackup.jpeg'}}" alt="Book Image" />
+        <mat-card-header><p mat-card-title>{{ char.name }}</p></mat-card-header>  
         <mat-card-content>
             <p mat-card-subtitle>{{ char.description }}</p>
         </mat-card-content>
