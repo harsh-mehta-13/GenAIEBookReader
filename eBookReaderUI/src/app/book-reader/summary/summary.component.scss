@@ -1,0 +1,111 @@
+/* Container styles */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f3f4f6 25%, #e5e7eb 100%); /* Gradient background */
+    padding: 20px;
+  }
+  
+  /* Content box styles */
+  .content {
+    width: 100%;
+    max-width: 960px; /* 60rem */
+    padding: 20px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .content:hover {
+    transform: translateY(-10px); /* Slight hover effect */
+  }
+  
+  /* Header styles */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e5e7eb; /* Light gray border */
+  }
+  
+  .header h1 {
+    font-size: 32px; /* Larger font size */
+    font-weight: bold;
+    color: #374151; /* Dark gray text */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Navigation button styles */
+  .nav {
+    display: flex;
+    gap: 16px;
+  }
+  
+  .nav button {
+    font-size: 16px; /* 1rem */
+    font-weight: 500;
+    color: #4b5563; /* Gray text */
+    background-color: #e5e7eb; /* Light gray background */
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .nav button:hover {
+    background-color: #d1d5db; /* Darker gray background */
+  }
+  
+  /* Main content styles */
+  .main {
+    display: grid;
+    gap: 32px;
+    padding-top: 32px;
+  }
+  
+  section {
+    width: 100%;
+  }
+  
+  section h2 {
+    font-size: 24px; /* 1.5rem */
+    font-weight: 600;
+    color: #1f2937; /* Darker gray text */
+    margin-bottom: 16px;
+  }
+  
+  /* Summary box styles */
+  .summary-box {
+    padding: 20px;
+    background-color: #f9fafb; /* Very light gray background */
+    border-radius: 12px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: background-color 0.3s ease;
+  }
+  
+  .total-summary {
+    background-color: #e0f7fa; /* Light cyan background */
+  }
+  
+  .chapter-summary {
+    background-color: #f1f8e9; /* Light green background */
+  }
+  
+  .summary-box h3 {
+    font-size: 20px; /* 1.25rem */
+    font-weight: 500;
+    color: #111827; /* Darker text */
+    margin-bottom: 12px;
+  }
+  
+  .summary-box p {
+    margin-top: 8px;
+    color: #374151; /* Dark gray text */
+    line-height: 1.6;
+  }

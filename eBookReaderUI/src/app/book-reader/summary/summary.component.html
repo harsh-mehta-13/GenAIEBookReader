@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="content">
+    <header class="header">
+      <h1>BOOK SUMMARY</h1>
+      <nav class="nav">
+        <button mat-button (click)="showTotalSummary()">Total Summary</button>
+        <button mat-button (click)="showCurrentChapterSummary()">Current Chapter Summary</button>
+      </nav>
+    </header>
+    <main class="main">
+      <section *ngIf="showTotalSummaryUi">
+        <h2>Book Summary</h2>
+        <div class="summary-box total-summary">
+          <h3>BOOK SUMMARY</h3>
+          <p>{{ totalSummary }}</p>
+        </div>
+      </section>
+      <section *ngIf="!showTotalSummaryUi">
+        <h2>Current Chapter Summary</h2>
+        <div class="summary-box chapter-summary">
+          <h3>CURRENT CHAPTER SUMMARY</h3>
+          <p>{{ chapterSummary }}</p>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>

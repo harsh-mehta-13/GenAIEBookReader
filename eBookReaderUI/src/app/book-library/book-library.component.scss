@@ -1,0 +1,65 @@
+.top-container{
+    display: flex;
+    align-items: center;
+    // justify-content: space-between; 
+    height: 6%;
+    padding: 5px;
+    border-bottom: 1px solid #000;
+    background-color: #E6B9A6;
+}
+
+.library-container{
+    display: flex;
+    flex-wrap: wrap;
+    // max-width: 1324px;
+    padding: 2%;
+    margin: 2% 8%;
+}
+
+h1{
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: normal;
+    margin: 0 2rem;
+    // width: 70%;
+}
+
+.book-details{
+    height: 350px;
+    width: 250px;
+    // border: 1px solid black;
+    box-shadow: 0px 3px 16px 0px rgba(0, 0, 0, 0.6), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12); 
+    margin: 2rem;
+    border-radius:0;
+}
+
+.book-image {
+  width: 100%;
+  height: 100%;
+}
+
+
+
+.vocab-item-container{
+    margin: 2%;
+    padding: 1em;
+}
+
+.vocab-word-container{
+    padding: 0.5em 1em;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.word{
+    // display: inline;
+    width: 20%;
+    padding: 10px;
+}
+
+.meaning {
+    // display: inline;
+    width: 80%;
+}
+

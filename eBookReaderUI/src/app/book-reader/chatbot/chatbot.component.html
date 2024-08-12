@@ -1,0 +1,26 @@
+<mat-card>
+  <mat-card-header style="justify-content: space-between">
+    <mat-card-title>CHATBOT</mat-card-title>
+    <mat-icon class="close-icon" (click)="closeChatBot()">close</mat-icon>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="chat-history">
+      <div *ngFor="let msg of chatHistory">
+        <div [ngClass]="{
+            'user-message': msg.sender === 'user',
+            'bot-message': msg.sender === 'bot'
+          }">
+          {{ msg.text }}
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+  <mat-card-actions class="inp-container">
+    <mat-form-field >
+      <mat-label>Type a message</mat-label>
+      <input matInput type="text" [(ngModel)]="userInput" (keyup.enter)="sendMessage()" [disabled]="isSending"/>
+    </mat-form-field>
+    <button mat-raised-button (click)="sendMessage()" [disabled]="isSending">Send</button>
+  </mat-card-actions>
+  
+</mat-card>
